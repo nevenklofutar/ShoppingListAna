@@ -10,5 +10,6 @@ namespace Contracts
     {
         IGroupRepository Groups { get; }
         IItemRepository Items { get; }
+        IAuthRepository Auth { get; }
     }
 }

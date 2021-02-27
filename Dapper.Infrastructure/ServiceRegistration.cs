@@ -15,6 +15,8 @@ namespace Dapper.Infrastructure
         {
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IItemRepository, ItemRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IAuthRepository, AuthRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
     }

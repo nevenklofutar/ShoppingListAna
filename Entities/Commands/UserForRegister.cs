@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities
+namespace Entities.Commands
 {
-    public class User
+    public class UserForRegister
     {
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        [Required]
         public string Email { get; set; }
+        [Required] 
         public string Username { get; set; }
-        public byte[] PasswordHash { get; set; }
+        [Required] 
+        public string Password { get; set; }
         public byte[] PasswordSalt { get; set; }
+        public byte[] PasswordHash { get; set; }
         public DateTime CreatedOn { get; set; }
     }
 }
