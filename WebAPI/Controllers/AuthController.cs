@@ -1,5 +1,7 @@
-﻿using Contracts;
+﻿using AutoMapper;
+using Contracts;
 using Entities.Commands;
+using Entities.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,10 +17,12 @@ namespace WebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public AuthController(IUnitOfWork unitOfWork)
+        public AuthController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -35,12 +39,17 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserForLogin userForLogin)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var user = await _unitOfWork.Auth.Login(userForLogin);
 
             if (user == null)
                 return BadRequest();
 
-            return Ok(user);
+            var userDTO = _mapper.Map<UserDTO>(user);
+
+            return Ok(userDTO);
         }
     }
 }
