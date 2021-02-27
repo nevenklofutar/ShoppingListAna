@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dapper.Infrastructure\Dapper.Infrastructure.csproj" />
+    <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
   </ItemGroup>
 
 </Project>
