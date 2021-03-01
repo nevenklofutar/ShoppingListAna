@@ -10,7 +10,7 @@ namespace Entities
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public decimal? Amount { get; set; }
+        public decimal? Amount { get; set; } = 0;
         public int GroupId { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
