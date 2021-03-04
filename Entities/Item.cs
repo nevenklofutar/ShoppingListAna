@@ -14,5 +14,6 @@ namespace Entities
         public int GroupId { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
+        public bool Selected { get; set; }
     }
 }

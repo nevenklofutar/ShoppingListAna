@@ -22,6 +22,7 @@ export interface ItemForUpsert {
    title: string;
    groupId: number;
    createdBy: number;
+   selected: boolean;
 }
 
 export interface Group {
@@ -37,4 +38,5 @@ export interface Item {
    groupId: number;
    createdBy: number;
    createdOn: Date;
+   selected: boolean;
 }
