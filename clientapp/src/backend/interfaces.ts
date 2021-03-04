@@ -23,3 +23,18 @@ export interface ItemForUpsert {
    groupId: number;
    createdBy: number;
 }
+
+export interface Group {
+   id: number;
+   title: string;
+   createdBy: number;
+   createdOn: Date;
+}
+
+export interface Item {
+   id: number;
+   title: string;
+   groupId: number;
+   createdBy: number;
+   createdOn: Date;
+}

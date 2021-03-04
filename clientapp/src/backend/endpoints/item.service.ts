@@ -1,19 +1,21 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { ItemForUpsert } from "../interfaces";
+import { Item, ItemForUpsert } from "../interfaces";
 
 @Injectable({
    providedIn: 'root'
 })
 export class ItemService {
-   baseUrl = environment.baseUrl;
+   private baseUrl = environment.baseUrl;
 
    constructor(private http: HttpClient) {}
 
-   getItem(itemId: number) {}
-
-   getItemsForGroup(groupId: number) {}
+   getItemsForGroup(groupId: number): Observable<Item[]> {
+      // console.log('getItemsForGroup: ' + groupId);
+      return this.http.get<Item[]>(this.baseUrl + `groups/${groupId}/items`);
+   }
 
    createItem(itemForUpsert: ItemForUpsert) {}
 

@@ -1,23 +1,41 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
-import { GroupForUpsert } from "../interfaces";
+import { Group, GroupForUpsert } from "../interfaces";
 
 @Injectable({
    providedIn: 'root'
 })
 export class GroupService {
-   baseUrl = environment.baseUrl;
+   private baseUrl = environment.baseUrl;
 
-   constructor(private http: HttpClient) {}
+   private groupsSubject = new BehaviorSubject<Group[]>([]);
+   groups$: Observable<Group[]> = this.groupsSubject.asObservable();
 
-   getAllGroups() {}
+   constructor(private http: HttpClient) {
+      // console.log('GroupService activated');
+      this.getAllGroups();
+   }
 
-   getGroup(groupId: number) {}
+   private getAllGroups() {
+      this.http.get<Group[]>(this.baseUrl + 'groups')
+         .subscribe(result => {
+            // console.log('get all groups');
+            this.groupsSubject.next(result);
+         });
+   }
 
-   createGroup(groupForUpsert: GroupForUpsert) {}
+   createGroup(groupForUpsert: GroupForUpsert) {
+      return this.http.post(this.baseUrl + '/groups', groupForUpsert);
+   }
 
-   updateGroup(groupForUpsert: GroupForUpsert) {}
+   updateGroup(groupForUpsert: GroupForUpsert) {
+      return this.http.put(this.baseUrl + '/groups', groupForUpsert);
+   }
 
-   deleteGroup(groupId: number) {}
+   deleteGroup(groupId: number) {
+      return this.http.delete(this.baseUrl + `/groups/${groupId}`);
+   }
 }

@@ -7,7 +7,7 @@ import { UserForLogin, UserForRegister } from '../interfaces';
    providedIn: 'root',
 })
 export class AuthService {
-   baseUrl = environment.baseUrl;
+   private baseUrl = environment.baseUrl;
 
    constructor(private http: HttpClient) {}
 

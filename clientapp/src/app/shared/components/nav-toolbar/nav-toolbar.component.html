@@ -13,6 +13,8 @@
          <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #navmenu="matMenu">
+         <button mat-menu-item (click)="navRedirect('groups')">Lists</button>
+         <button mat-menu-item (click)="navRedirect('groups/1')">List 1</button>
          <!-- <button mat-menu-item (click)="profile()">Profile</button>
            <button mat-menu-item (click)="search()">Search</button>
            <button mat-menu-item (click)="logout()">Logout</button> -->

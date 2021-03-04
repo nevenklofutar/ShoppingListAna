@@ -9,21 +9,23 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
 
 const material = [
-    MatCardModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatGridListModule,
-    MatProgressSpinnerModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatMenuModule,
+   MatCardModule,
+   MatButtonModule,
+   MatFormFieldModule,
+   MatInputModule,
+   MatGridListModule,
+   MatProgressSpinnerModule,
+   MatToolbarModule,
+   MatIconModule,
+   MatMenuModule,
+   MatListModule,
 ];
 
 @NgModule({
-    imports: [material],
-    exports: [material],
+   imports: [material],
+   exports: [material],
 })
 export class MaterialModule {}
