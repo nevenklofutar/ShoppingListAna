@@ -51,14 +51,14 @@ namespace WebAPI.Controllers
             return Ok(data);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var data = await _unitOfWork.Groups.DeleteAsync(id);
             return Ok(data);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(Group group)
         {
             var data = await _unitOfWork.Groups.UpdateAsync(group);

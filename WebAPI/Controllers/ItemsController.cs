@@ -43,14 +43,14 @@ namespace WebAPI.Controllers
             return Ok(data);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var data = await _unitOfWork.Items.DeleteAsync(id);
             return Ok(data);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(Item item)
         {
             var data = await _unitOfWork.Items.UpdateAsync(item);

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MatListOption } from '@angular/material/list';
 import { ActivatedRoute } from '@angular/router';
 import {
    BehaviorSubject,
@@ -7,8 +8,16 @@ import {
    Observable,
    Subject,
 } from 'rxjs';
-import { concatMap, filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import {
+   concatMap,
+   filter,
+   map,
+   mergeMap,
+   switchMap,
+   tap,
+} from 'rxjs/operators';
 import { BaseComponent } from 'src/app/shared/components/base/base.component';
+import { sortItemsBySelectedThenTitle } from 'src/app/shared/extensions';
 import { GroupService } from 'src/backend/endpoints/group.service';
 import { ItemService } from 'src/backend/endpoints/item.service';
 import { Group, Item } from 'src/backend/interfaces';
@@ -20,6 +29,9 @@ import { Group, Item } from 'src/backend/interfaces';
    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GroupDetailsComponent extends BaseComponent {
+   private subjectGroupId = new BehaviorSubject<number>(0);
+   private groupId$ = this.subjectGroupId.asObservable();
+
    groupId: number;
    group: Group;
    items: Item[];
@@ -31,48 +43,43 @@ export class GroupDetailsComponent extends BaseComponent {
    ) {
       super();
 
-      const subParams = this.route.params
-         .subscribe((params) => {
-            this.groupId = +params['id'];
-            console.log('got param: ' + this.groupId);
-         });
+      const subParams = this.route.params.subscribe((params) => {
+         this.groupId = +params['id'];
+         this.subjectGroupId.next(this.groupId);
+      });
       this.subscriptions.push(subParams);
 
-      const subGroups = this.groupService.groups$
+      const subGroupsItems = this.groupId$
          .pipe(
-            map(groups => groups.filter(group => group.id === this.groupId))
-         ).subscribe(result => {this.group = result[0]; console.log(result)});
-      this.subscriptions.push(subGroups);
-
-      const subItems = this.itemService.getItemsForGroup(this.groupId)
-         .subscribe(items => this.items = items);
-      this.subscriptions.push(subItems);
-
-      // const subGroupsItems = this.groupId$
-      //    .pipe(
-      //       // tap(result => console.log('this.groupId$: ' + result)),\
-      //       // switychmap[ umjesto merge map]
-      //       mergeMap(result => combineLatest([this.groupService.groups$, this.itemService.getItemsForGroup(result)])),
-      //    ).subscribe(
-      //       ([groups, items]) => {
-      //          console.log('result groups');
-      //          console.log(groups);
-      //          console.log('result items');
-      //          console.log(items);
-
-      //          const index = groups.findIndex(g => g.id == this.groupId)
-      //          this.group = groups[index];
-      //          this.items = items;
-      //       }
-      //    );
-      // this.subscriptions.push(subGroupsItems);
+            // switychmap[ umjesto merge map]
+            // mergeMap(result => combineLatest([this.groupService.groups$, this.itemService.getItemsForGroup(result)])),
+            switchMap((result) =>
+               combineLatest([
+                  this.groupService.groups$,
+                  this.itemService.getItemsForGroup(result),
+               ])
+            )
+         )
+         .subscribe(([groups, items]) => {
+            const index = groups.findIndex((g) => g.id == this.groupId);
+            this.group = groups[index];
+            this.items = items;
+         });
+      this.subscriptions.push(subGroupsItems);
    }
 
-   ngOnInit(): void {
+   ngOnInit(): void {}
 
-   }
+   // onItemsSelectionChange(options: MatListOption[]) {
+   //    // map these MatListOptions to their values
+   //    console.log(options.map<Item>((o) => o.value));
+   // }
 
    selectItem(item: Item) {
-      console.log(item.title);
+      const index = this.items.findIndex(i => i.id === item.id);
+      let itemToUpdate = this.items[index];
+      itemToUpdate.selected = !itemToUpdate.selected;
+      this.items.sort(sortItemsBySelectedThenTitle);
+      this.itemService.updateItem(itemToUpdate);
    }
 }

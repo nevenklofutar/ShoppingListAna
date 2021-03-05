@@ -11,20 +11,6 @@ export interface UserForRegister {
    password: string;
 }
 
-export interface GroupForUpsert {
-   id: number;
-   title: string;
-   createdBy: number;
-}
-
-export interface ItemForUpsert {
-   id: number;
-   title: string;
-   groupId: number;
-   createdBy: number;
-   selected: boolean;
-}
-
 export interface Group {
    id: number;
    title: string;

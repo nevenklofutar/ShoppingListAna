@@ -2,8 +2,9 @@
    <div class="item-600">
       <div>{{ group?.title }}</div>
       <div>
-         <mat-selection-list dense>
-            <mat-list-option *ngFor="let item of items" (click)="selectItem(item)">
+         <!-- <mat-selection-list dense #groupItems (selectionChange)="onItemsSelectionChange(groupItems.selectedOptions.selected)"> -->
+            <mat-selection-list dense #groupItems>
+            <mat-list-option *ngFor="let item of items" [value]="item" [selected]="item.selected" (click)="selectItem(item)">
                {{ item.title }}
             </mat-list-option>
          </mat-selection-list>

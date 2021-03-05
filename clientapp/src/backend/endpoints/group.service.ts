@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
-import { Group, GroupForUpsert } from "../interfaces";
+import { Group } from "../interfaces";
 
 @Injectable({
    providedIn: 'root'
@@ -27,12 +27,12 @@ export class GroupService {
          });
    }
 
-   createGroup(groupForUpsert: GroupForUpsert) {
-      return this.http.post(this.baseUrl + '/groups', groupForUpsert);
+   createGroup(group: Group) {
+      return this.http.post(this.baseUrl + '/groups', group);
    }
 
-   updateGroup(groupForUpsert: GroupForUpsert) {
-      return this.http.put(this.baseUrl + '/groups', groupForUpsert);
+   updateGroup(group: Group) {
+      return this.http.put(this.baseUrl + '/groups', group);
    }
 
    deleteGroup(groupId: number) {

@@ -1,11 +1,13 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
-import { environment } from "src/environments/environment";
-import { Item, ItemForUpsert } from "../interfaces";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { sortItemsBySelectedThenTitle } from 'src/app/shared/extensions';
+import { environment } from 'src/environments/environment';
+import { Item } from '../interfaces';
 
 @Injectable({
-   providedIn: 'root'
+   providedIn: 'root',
 })
 export class ItemService {
    private baseUrl = environment.baseUrl;
@@ -14,12 +16,15 @@ export class ItemService {
 
    getItemsForGroup(groupId: number): Observable<Item[]> {
       // console.log('getItemsForGroup: ' + groupId);
-      return this.http.get<Item[]>(this.baseUrl + `groups/${groupId}/items`);
+      return this.http.get<Item[]>(this.baseUrl + `groups/${groupId}/items`)
+         .pipe(map((items) => items.sort(sortItemsBySelectedThenTitle)));
    }
 
-   createItem(itemForUpsert: ItemForUpsert) {}
+   createItem(item: Item) {}
 
-   updateItem(itemForUpsert: ItemForUpsert) {}
+   updateItem(item: Item) {
+      this.http.put(this.baseUrl + `items/${item.id}`, item).subscribe();
+   }
 
    deleteItem(itemId: number) {}
 }

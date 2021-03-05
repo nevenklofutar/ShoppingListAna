@@ -22,7 +22,7 @@ namespace Dapper.Infrastructure.Repositories
         public async Task<int> AddAsync(Item entity)
         {
             entity.CreatedOn = DateTime.Now;
-            var sql = "Insert into Items (Title,CreatedBy,CreatedOn,GroupId) VALUES (@Title,@CreatedBy,@CreatedOn,@GroupId)";
+            var sql = "Insert into Items (Title,CreatedBy,CreatedOn,GroupId,Selected) VALUES (@Title,@CreatedBy,@CreatedOn,@GroupId,@Selected)";
             using (var connection = new SQLiteConnection(configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
@@ -77,7 +77,7 @@ namespace Dapper.Infrastructure.Repositories
 
         public async Task<int> UpdateAsync(Item entity)
         {
-            var sql = "UPDATE Items SET Title = @Title, CreatedBy = @CreatedBy, CreatedOn = @CreatedOn, GroupId = @GroupId WHERE Id = @Id";
+            var sql = "UPDATE Items SET Title = @Title, CreatedBy = @CreatedBy, CreatedOn = @CreatedOn, GroupId = @GroupId, Selected = @Selected WHERE Id = @Id";
             using (var connection = new SQLiteConnection(configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
